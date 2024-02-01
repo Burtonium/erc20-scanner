@@ -7,6 +7,3 @@
 - ⚡ WebSockets / Subscription support
 - ⚙️ VSCode extensions
 - 🎨 ESLint + Prettier
-- 💚 CI setup using GitHub Actions:
-  - ✅ E2E testing with [Playwright](https://playwright.dev/)
-  - ✅ Linting
