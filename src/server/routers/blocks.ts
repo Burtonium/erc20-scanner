@@ -9,7 +9,7 @@ import { router, publicProcedure } from 'server/trpc';
 import { observable } from '@trpc/server/observable';
 import { readFileSync, writeFile } from 'fs';
 import process from 'node:process';
-import { debounce, sortBy } from 'lodash';
+import { debounce, sortBy, uniqBy } from 'lodash';
 
 // Connect to an Ethereum node
 const web3 = new Web3(
@@ -38,7 +38,13 @@ export const blocksEmitter =
 
 const writeAndEmit = debounce(
   () => {
-    blocks = sortBy(blocks, (b) => -parseFloat(b.number));
+    if (blocks.length > BLOCK_LIMIT) {
+      blocks.pop();
+    }
+    blocks = uniqBy(
+      sortBy(blocks, (b) => -parseFloat(b.number)),
+      (b) => b.number,
+    );
     writeFile('./blocks.json', JSON.stringify(blocks), (e) =>
       e ? console.error(e) : undefined,
     );
@@ -97,9 +103,6 @@ web3.eth
       };
       if (blockInfo.number) {
         blocks.unshift(blockInfo);
-        if (blocks.length > BLOCK_LIMIT) {
-          blocks.pop();
-        }
         writeAndEmit();
       }
     };
