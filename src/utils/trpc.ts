@@ -12,12 +12,9 @@ import getConfig from 'next/config';
 import type { AppRouter } from 'server/routers/_app';
 import superjson from 'superjson';
 
-// ℹ️ Type-only import:
-// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export
-
 const { publicRuntimeConfig } = getConfig();
 
-const { APP_URL, WS_URL } = publicRuntimeConfig;
+const { APP_URL, WS_URL, VERCEL_URL } = publicRuntimeConfig;
 
 function getEndingLink(ctx: NextPageContext | undefined): TRPCLink<AppRouter> {
   if (typeof window === 'undefined') {
@@ -26,7 +23,7 @@ function getEndingLink(ctx: NextPageContext | undefined): TRPCLink<AppRouter> {
        * @link https://trpc.io/docs/v11/data-transformers
        */
       transformer: superjson,
-      url: `${APP_URL}/api/trpc`,
+      url: `${VERCEL_URL || APP_URL}/api/trpc`,
       headers() {
         if (!ctx?.req?.headers) {
           return {};
@@ -40,7 +37,7 @@ function getEndingLink(ctx: NextPageContext | undefined): TRPCLink<AppRouter> {
     });
   }
   const client = createWSClient({
-    url: WS_URL,
+    url: VERCEL_URL?.replace(/https?/, 'ws') || WS_URL,
   });
   return wsLink({
     client,

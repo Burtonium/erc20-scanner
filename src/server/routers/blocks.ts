@@ -5,7 +5,7 @@ dotenv.config();
 import Web3, { BlockHeaderOutput, LogsOutput } from 'web3';
 import EventEmitter from 'events';
 import type TypedEmitter from 'typed-emitter';
-import { router, publicProcedure } from 'server/trpc';
+import { router, publicProcedure } from '../trpc';
 import { observable } from '@trpc/server/observable';
 import { readFileSync, writeFile } from 'fs';
 import process from 'node:process';
@@ -13,7 +13,7 @@ import { debounce, sortBy, uniqBy } from 'lodash';
 
 // Connect to an Ethereum node
 const web3 = new Web3(
-  new Web3.providers.WebsocketProvider(process.env.NEXT_ALCHEMY_WSS!),
+  new Web3.providers.WebsocketProvider(process.env.NEXT_ALCHEMY_WSS!)
 );
 
 const BLOCK_LIMIT = 11;
@@ -43,15 +43,15 @@ const writeAndEmit = debounce(
     }
     blocks = uniqBy(
       sortBy(blocks, (b) => -parseFloat(b.number)),
-      (b) => b.number,
+      (b) => b.number
     );
     writeFile('./blocks.json', JSON.stringify(blocks), (e) =>
-      e ? console.error(e) : undefined,
+      e ? console.error(e) : undefined
     );
     blocksEmitter.emit('blocks', blocks);
   },
   1000,
-  { trailing: true },
+  { trailing: true }
 );
 
 try {
@@ -126,7 +126,7 @@ web3.eth
     const onLog = (log: LogsOutput) => {
       if (!log.blockNumber) return;
       const block = blocks.find(
-        (b) => b.number === log.blockNumber!.toString(),
+        (b) => b.number === log.blockNumber!.toString()
       );
 
       if (!block) {

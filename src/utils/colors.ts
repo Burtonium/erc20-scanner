@@ -1,7 +1,7 @@
 export function interpolateColor(
   fromColor: string,
   toColor: string,
-  numberOfShades: number,
+  numberOfShades: number
 ): string[] {
   // Ensure the input is valid
   if (numberOfShades < 2) {
@@ -37,13 +37,13 @@ export function interpolateColor(
 
   for (let i = 0; i < numberOfShades; i++) {
     const r = Math.round(
-      startRgb[0] * (1 - i * stepFactor) + endRgb[0] * (i * stepFactor),
+      startRgb[0] * (1 - i * stepFactor) + endRgb[0] * (i * stepFactor)
     );
     const g = Math.round(
-      startRgb[1] * (1 - i * stepFactor) + endRgb[1] * (i * stepFactor),
+      startRgb[1] * (1 - i * stepFactor) + endRgb[1] * (i * stepFactor)
     );
     const b = Math.round(
-      startRgb[2] * (1 - i * stepFactor) + endRgb[2] * (i * stepFactor),
+      startRgb[2] * (1 - i * stepFactor) + endRgb[2] * (i * stepFactor)
     );
     shades.push('#' + rgbToHex(r, g, b));
   }

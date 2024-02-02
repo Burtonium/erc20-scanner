@@ -11,6 +11,7 @@ const config = {
     // Will be available on both server and client
     APP_URL: process.env.APP_URL,
     WS_URL: process.env.WS_URL,
+    VERCEL_URL: process.env.VERCEL_URL
   },
   /** We run eslint as a separate task in CI */
   eslint: { ignoreDuringBuilds: !!process.env.CI },

@@ -4,7 +4,7 @@ import { animated, config, Spring } from 'react-spring';
 import { useEffect, useMemo, useState } from 'react';
 import { BlockInfo } from 'server/routers/blocks';
 import Spinner from './_components/Spinner';
-import { interpolateColor } from './_utils/colors';
+import { interpolateColor } from '../utils/colors';
 
 function roundUpToHighest10(n: number): number {
   return Math.ceil(n / 10) * 10;
@@ -18,25 +18,25 @@ export default function IndexPage() {
   const maxTxCount = useMemo(
     () =>
       roundUpToHighest10(
-        blocks ? Math.max(...blocks.map((b) => b.erc20TxCount)) : 0,
+        blocks ? Math.max(...blocks.map((b) => b.erc20TxCount)) : 0
       ),
-    [blocks],
+    [blocks]
   );
 
   const maxBaseFee = useMemo(
     () =>
       roundUpToHighest10(
-        blocks ? Math.max(...blocks.map((b) => Number(b.baseFee))) / 1e9 : 0,
+        blocks ? Math.max(...blocks.map((b) => Number(b.baseFee))) / 1e9 : 0
       ),
-    [blocks],
+    [blocks]
   );
 
   const gasUsedOverLimitPercents = useMemo(
     () =>
       blocks?.map((b) =>
-        ((Number(b.gasUsed) / Number(b.gasLimit)) * 100).toFixed(2),
+        ((Number(b.gasUsed) / Number(b.gasLimit)) * 100).toFixed(2)
       ),
-    [blocks],
+    [blocks]
   );
 
   useEffect(() => setBlocks(blocksQuery.data), [blocksQuery.data]);
